@@ -18,12 +18,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     TextView textView;
 
-    static {
-        System.loadLibrary("AppSecurity");
-    }
-
-    public static native String getDeviceID();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_main);
         textView = (TextView) findViewById(R.id.DEVICE_ID);
-        textView.setText(getDeviceID());
+        textView.setText(Security.getSalt(this));
     }
 
     @Override
