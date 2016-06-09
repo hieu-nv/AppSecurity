@@ -7,7 +7,7 @@ model {
 
         defaultConfig {
             applicationId "com.hieunv.app.security"
-            minSdkVersion.apiLevel 22
+            minSdkVersion.apiLevel 15
             targetSdkVersion.apiLevel 23
             versionCode 1
             versionName "1.0"
@@ -22,7 +22,7 @@ model {
         }
         buildTypes {
             release {
-                minifyEnabled false
+                minifyEnabled true
                 proguardFiles.add(file('proguard-rules.pro'))
             }
         }
