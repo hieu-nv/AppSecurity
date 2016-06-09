@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "908868278253",
+    "project_id": "appsecurity-98b10"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908868278253:android:c44d8d1fc11c94ae",
+        "android_client_info": {
+          "package_name": "com.hieunv.app.security"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908868278253-9kvmn6lhdt9c7cuvkte1p0uk7jpd83fd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hieunv.app.security",
+            "certificate_hash": "67768C6CF3A20A8AA6E4512E384D77AA5CE1CAF1"
+          }
+        },
+        {
+          "client_id": "908868278253-r78n5ar9vd1smsvg6d19u4jhufm2vfom.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh0E0j3uMKtrPJ2hK6kRJMNMXa_7AVYi8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
