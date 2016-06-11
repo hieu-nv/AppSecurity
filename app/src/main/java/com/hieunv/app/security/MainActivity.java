@@ -21,10 +21,11 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+
+    private static final String TAG = "MainActivity";
 
     TextView textView;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "MainActivity::onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         setContentView(R.layout.activity_main);
-        textView = (TextView) findViewById(R.id.DEVICE_ID);
+        textView = (TextView) findViewById(R.id.GOOGLE_ACCOUNT);
         textView.setText(Security.getSalt(this));
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -66,11 +68,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setScopes(gso.getScopeArray());
-        signInButton.setOnClickListener(this);
+//        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+//        signInButton.setSize(SignInButton.SIZE_STANDARD);
+//        signInButton.setScopes(gso.getScopeArray());
+//        signInButton.setOnClickListener(this);
     }
 
     @Override
@@ -135,24 +136,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.sign_in_button:
+//                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+//                startActivityForResult(signInIntent, 0);
+//                break;
+//        }
+//    }
+
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.sign_in_button:
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-                startActivityForResult(signInIntent, 0);
-                break;
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "MainActivity::onActivityResult()");
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            Log.i(TAG, "login successfully!");
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            Log.i(TAG, result.getSignInAccount().getEmail() + " " + result.getStatus());
+            AccountContext.getInstance().setGoogleSignInAccount(result.getSignInAccount());
+            textView.setText(result.getSignInAccount().getEmail());
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("HieuNV", "dcm" + requestCode + resultCode + data.getDataString());
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == 0) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            Log.i("", result.getSignInAccount().getEmail() + " " + result.getStatus());
+    protected void onStart() {
+        Log.d(TAG, "MainActivity::onStart()");
+        super.onStart();
+        if (!AccountContext.getInstance().isGoogleAccount()) {
+            Log.i(TAG, "start login with google account!");
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+            startActivityForResult(signInIntent, 0);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "MainActivity::onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.d(TAG, "MainActivity::onRestart()");
+        super.onRestart();
     }
 }
