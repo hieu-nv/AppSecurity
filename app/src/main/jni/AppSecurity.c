@@ -90,6 +90,13 @@ JNIEXPORT jstring JNICALL Java_com_hieunv_app_security_Security_getSalt(JNIEnv *
     }
     (*env)->ReleaseStringUTFChars(env, deviceIDString, deviceID);
 
+    jstring packageNameString = getPackageName(env, context);
+    const char *packageName = (*env)->GetStringUTFChars(env, packageNameString, 0);
+    if (strcmp(packageName, PACKAGE_NAME) != 0) {
+        return (*env)->NewStringUTF(env, "xKJnEYue6ZW44j4n");
+    }
+    (*env)->ReleaseStringUTFChars(env, packageNameString, packageName);
+
     jstring serialNoString = getSerialNo(env);
     const char *serialNo = (*env)->GetStringUTFChars(env, serialNoString, 0);
     if (strcmp(serialNo, EMPTY_STRING) == 0 || strcmp(serialNo, NOT_EXPECTED_SERIAL_NO) == 0) {
@@ -97,12 +104,5 @@ JNIEXPORT jstring JNICALL Java_com_hieunv_app_security_Security_getSalt(JNIEnv *
     }
     (*env)->ReleaseStringUTFChars(env, serialNoString, serialNo);
 
-    jstring packageNameString = getPackageName(env, context);
-    const char *packageName = (*env)->GetStringUTFChars(env, packageNameString, 0);
-    if (strcmp(packageName, PACKAGE_NAME) != 0) {
-        return (*env)->NewStringUTF(env, "xKJnEYue6ZW44j4n");
-    }
-
-    (*env)->ReleaseStringUTFChars(env, packageNameString, packageName);
     return (*env)->NewStringUTF(env, "AXLqBm44PWH6mrwv");
 }
